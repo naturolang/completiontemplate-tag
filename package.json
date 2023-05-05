@@ -1,6 +1,6 @@
 {
   "name": "completiontemplate-tag",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -24,7 +24,7 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "completion-tag": "^2.0.1",
+    "completion-tag": "^2.0.2",
     "openai": "^3.2.1"
   }
 }

@@ -7,15 +7,5 @@ export async function completiontemplate(
   if (typeof literals === 'string') {
     literals = [literals];
   }
-  let str = literals[0]
-  for (let i = 0; i < args.length; i++) {
-    const arg = args[i];
-    if (arg && arg.kind === 'Document') {
-      str += await completion`${arg.loc.source.body}`
-    } else {
-      str += await completion`${arg}`
-    }
-    str += literals[i + 1]
-  }
-  return str
+  return (await Promise.all(args.map(async (arg, i) => ([i, ((arg && arg.kind === 'Document') ? await completion`${arg.loc.source.body}` : await completion`${arg}`) + literals[i + 1]])))).sort((a, b) => (a[0] as number) - (b[0] as number)).reduce((pv, cv) => [...pv, cv[1]], [literals[0]]).join('')
 }
