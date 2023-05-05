@@ -1,1 +1,1 @@
-export declare function completion(literals: string | readonly string[], ...args: any[]): Promise<string>;
+export declare function completiontemplate(literals: string | readonly string[], ...args: any[]): Promise<string>;

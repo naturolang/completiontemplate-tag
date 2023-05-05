@@ -9,26 +9,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.completion = void 0;
-const openai_1 = require("openai");
-const openai = new openai_1.OpenAIApi(new openai_1.Configuration({
-    apiKey: process.env.OPENAI_API_KEY,
-}));
-function completion(literals, ...args) {
-    var _a, _b, _c;
+exports.completiontemplate = void 0;
+const completion_tag_1 = require("completion-tag");
+function completiontemplate(literals, ...args) {
     return __awaiter(this, void 0, void 0, function* () {
-        let str;
         if (typeof literals === 'string') {
-            str = literals;
+            literals = [literals];
         }
-        else {
-            str = literals.join();
-        }
-        const res = yield openai.createChatCompletion({
-            messages: [{ role: 'user', content: str, }],
-            model: 'gpt-3.5-turbo',
-        });
-        return (_c = (_b = (_a = res.data.choices[0]) === null || _a === void 0 ? void 0 : _a.message) === null || _b === void 0 ? void 0 : _b.content) !== null && _c !== void 0 ? _c : str;
+        return (yield Promise.all(args.map((arg, i) => __awaiter(this, void 0, void 0, function* () { return ([i, ((arg && arg.kind === 'Document') ? yield (0, completion_tag_1.completion) `${arg.loc.source.body}` : yield (0, completion_tag_1.completion) `${arg}`) + literals[i + 1]]); })))).sort((a, b) => a[0] - b[0]).reduce((pv, cv) => [...pv, cv[1]], [literals[0]]).join('');
     });
 }
-exports.completion = completion;
+exports.completiontemplate = completiontemplate;
